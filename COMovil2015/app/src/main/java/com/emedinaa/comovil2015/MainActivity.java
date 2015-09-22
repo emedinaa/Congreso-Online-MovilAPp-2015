@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements BaseView {
     @Bind(R.id.iviAdd)
     View iviAdd;
 
-    @Bind(R.id.iviVolleyRefresh)
-    View iviVolleyRefresh;
+    @Bind(R.id.llayRetrofit)
+    View llayRetrofit;
 
-    @Bind(R.id.iviRetrofitRefresh)
-    View iviRetrofitRefresh;
+    @Bind(R.id.llayVolley)
+    View llayVolley;
 
     private RecyclerView.LayoutManager mLayoutManager;
     private VolleyPresenter volleyPresenter;
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements BaseView {
         retrofitPresenter= new RetrofitPresenter(this,this);
         //cargar expositores
         //volleyPresenter.loadSpeakers();
+        showLoading(true);
         retrofitPresenter.loadSpeakers();
 
         //agregar expositor
@@ -77,6 +78,24 @@ public class MainActivity extends AppCompatActivity implements BaseView {
             @Override
             public void onClick(View view) {
                 gotoAdd();
+            }
+        });
+
+        llayRetrofit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLoading(true);
+                speakerAdapter.clear();
+                retrofitPresenter.loadSpeakers();
+            }
+        });
+
+        llayVolley.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLoading(true);
+                speakerAdapter.clear();
+                volleyPresenter.loadSpeakers();
             }
         });
     }

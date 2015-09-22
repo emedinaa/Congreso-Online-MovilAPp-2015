@@ -66,6 +66,12 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.ViewHold
         return speakerEntityList.size();
     }
 
+    public void clear()
+    {
+        speakerEntityList.clear();
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView iviSpeaker;
