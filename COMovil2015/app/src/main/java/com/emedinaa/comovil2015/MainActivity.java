@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements BaseView {
         volleyPresenter= new VolleyPresenter(this,this);
         retrofitPresenter= new RetrofitPresenter(this,this);
         //cargar expositores
-        volleyPresenter.loadSpeakers();
+        //volleyPresenter.loadSpeakers();
+        retrofitPresenter.loadSpeakers();
 
         //agregar expositor
         //volleyPresenter.addSpeaker("Usuario","Demo","Test");
