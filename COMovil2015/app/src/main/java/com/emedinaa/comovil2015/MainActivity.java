@@ -1,37 +1,153 @@
 package com.emedinaa.comovil2015;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import com.emedinaa.comovil2015.model.entity.SpeakerEntity;
+import com.emedinaa.comovil2015.presenter.RetrofitPresenter;
+import com.emedinaa.comovil2015.presenter.VolleyPresenter;
+import com.emedinaa.comovil2015.utils.DividerItemDecorator;
+import com.emedinaa.comovil2015.view.AddSpeakerActivity;
+import com.emedinaa.comovil2015.view.adapters.SpeakerAdapter;
+import com.emedinaa.comovil2015.view.core.BaseView;
+
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity implements BaseView {
+
+    private static final String TAG = "MainActivity";
+    @Bind(R.id.rviSpeakers)
+    RecyclerView rviSpeakers;
+
+    @Bind(R.id.rlayLoading)
+    View rlayLoading;
+
+    @Bind(R.id.iviAdd)
+    View iviAdd;
+
+    @Bind(R.id.iviVolleyRefresh)
+    View iviVolleyRefresh;
+
+    @Bind(R.id.iviRetrofitRefresh)
+    View iviRetrofitRefresh;
+
+    private RecyclerView.LayoutManager mLayoutManager;
+    private VolleyPresenter volleyPresenter;
+    private RetrofitPresenter retrofitPresenter;
+    private SpeakerAdapter speakerAdapter;
+    private List<SpeakerEntity> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        init();
+    }
+
+    private void init() {
+        ui();
+        volleyPresenter= new VolleyPresenter(this,this);
+        retrofitPresenter= new RetrofitPresenter(this,this);
+        //cargar expositores
+        volleyPresenter.loadSpeakers();
+
+        //agregar expositor
+        //volleyPresenter.addSpeaker("Usuario","Demo","Test");
+        /*SpeakerEntity speakerEntity= new SpeakerEntity();
+        speakerEntity.setName("Usuario 1");
+        speakerEntity.setLastname("Demo 1");
+        speakerEntity.setSkill("Test 1");
+        retrofitPresenter.addSpeaker(speakerEntity);*/
+
+        //events
+        iviAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoAdd();
+            }
+        });
+    }
+
+    private void gotoAdd() {
+        Intent intent= new Intent(this, AddSpeakerActivity.class);
+        startActivity(intent);
+    }
+
+    private void ui() {
+        rviSpeakers.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        rviSpeakers.setLayoutManager(mLayoutManager);
+        rviSpeakers.addItemDecoration(new DividerItemDecorator(this, DividerItemDecorator.VERTICAL_LIST));
+    }
+
+    private void populate(List<SpeakerEntity> lsSpeakerEntities)
+    {
+        speakerAdapter= new SpeakerAdapter(this,lsSpeakerEntities);
+        rviSpeakers.setAdapter(speakerAdapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+        return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        return false;
+    }
+
+    @Override
+    public void showLoading(boolean b) {
+        int visibility= (b)?(View.VISIBLE):(View.GONE);
+        rlayLoading.setVisibility(visibility);
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
+    }
+
+    @Override
+    public void completeSuccess(Object object, int type) {
+        data= (List<SpeakerEntity>)(object);
+        switch (type)
+        {
+            case 100:
+
+                    if(data!=null)populate(data);
+                break;
+            case 101:
+                    if(data!=null)populate(data);
+                break;
         }
+        showLoading(false);
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void completeError(Object object, int type) {
+        switch (type)
+        {
+            case 100:
+                    Log.v(TAG, "volley complete error " + object);
+                break;
+            case 101:
+                    Log.v(TAG, "retrofit complete error " + object);
+                break;
+        }
+        showLoading(false);
     }
 }
