@@ -118,6 +118,7 @@ public class VolleyPresenter {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.v(TAG,"add speaker response "+ response.toString());
+                        view.completeSuccess(response, 100);
 
                     }
                 }, new Response.ErrorListener()
@@ -127,6 +128,7 @@ public class VolleyPresenter {
             public void onErrorResponse(VolleyError error) {
                 Log.i(TAG, "add speaker Error: " + error.getMessage());
                 // hide the progress dialog
+                view.completeSuccess(error, 100);
 
             }
         })

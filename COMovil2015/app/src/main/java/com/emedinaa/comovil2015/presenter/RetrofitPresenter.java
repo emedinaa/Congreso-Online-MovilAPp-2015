@@ -62,13 +62,13 @@ public class RetrofitPresenter {
                 Log.v(TAG, "speaker add success " + speakerAddResponse);
                 Log.v(TAG, "response " + response.getHeaders().toString());
 
-                view.completeSuccess(dataSpeaker, 101);
+                view.completeSuccess(speakerAddResponse, 101);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.v(TAG, "speaker add error " + error);
-                view.completeError(dataSpeaker, 101);
+                view.completeError(error, 101);
             }
         });
     }

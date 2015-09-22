@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements BaseView {
 
     @Override
     public Context getContext() {
-        return null;
+        return this;
     }
 
     @Override

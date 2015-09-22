@@ -93,13 +93,12 @@ public class AddSpeakerActivity extends ActionBarActivity implements BaseView {
 
     @Override
     public Context getContext() {
-        return null;
+        return this;
     }
 
     @Override
     public void completeSuccess(Object object, int type) {
         showLoading(false);
-
         finish();
 
     }
