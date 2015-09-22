@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.emedinaa.comovil2015.R;
+import com.emedinaa.comovil2015.model.entity.SpeakerEntity;
 import com.emedinaa.comovil2015.presenter.RetrofitPresenter;
 import com.emedinaa.comovil2015.presenter.VolleyPresenter;
 import com.emedinaa.comovil2015.view.core.BaseView;
@@ -27,6 +28,10 @@ public class AddSpeakerActivity extends ActionBarActivity implements BaseView {
     private VolleyPresenter volleyPresenter;
     private RetrofitPresenter retrofitPresenter;
 
+    private String name;
+    private String lastName;
+    private String skill;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +47,31 @@ public class AddSpeakerActivity extends ActionBarActivity implements BaseView {
         butAddSpeaker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (validate()) {
+                    showLoading(true);
+                    //volleyPresenter.addSpeaker(name,lastName,skill);
 
+                    SpeakerEntity speakerEntity= new SpeakerEntity();
+                    speakerEntity.setName(name);
+                    speakerEntity.setLastname(lastName);
+                    speakerEntity.setSkill(skill);
+
+                    retrofitPresenter.addSpeaker(speakerEntity);
+
+                }
             }
         });
+    }
+
+    private boolean validate() {
+        name= eTxtName.getText().toString().trim();
+        lastName= eTxtLastName.getText().toString().trim();
+        skill= eTxtSkill.getText().toString().trim();
+        if(name.isEmpty())return false ;
+        if(lastName.isEmpty())return false ;
+        if(skill.isEmpty())return false;
+
+        return true;
     }
 
     @Override
@@ -71,11 +98,14 @@ public class AddSpeakerActivity extends ActionBarActivity implements BaseView {
 
     @Override
     public void completeSuccess(Object object, int type) {
+        showLoading(false);
+
+        finish();
 
     }
 
     @Override
     public void completeError(Object object, int type) {
-
+        showLoading(false);
     }
 }

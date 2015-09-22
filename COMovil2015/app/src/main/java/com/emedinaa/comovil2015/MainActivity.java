@@ -60,18 +60,6 @@ public class MainActivity extends AppCompatActivity implements BaseView {
         ui();
         volleyPresenter= new VolleyPresenter(this,this);
         retrofitPresenter= new RetrofitPresenter(this,this);
-        //cargar expositores
-        //volleyPresenter.loadSpeakers();
-        showLoading(true);
-        retrofitPresenter.loadSpeakers();
-
-        //agregar expositor
-        //volleyPresenter.addSpeaker("Usuario","Demo","Test");
-        /*SpeakerEntity speakerEntity= new SpeakerEntity();
-        speakerEntity.setName("Usuario 1");
-        speakerEntity.setLastname("Demo 1");
-        speakerEntity.setSkill("Test 1");
-        retrofitPresenter.addSpeaker(speakerEntity);*/
 
         //events
         iviAdd.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +86,26 @@ public class MainActivity extends AppCompatActivity implements BaseView {
                 volleyPresenter.loadSpeakers();
             }
         });
+
+
+        //volleyPresenter.loadSpeakers();
+
+        //agregar expositor
+        //volleyPresenter.addSpeaker("Usuario","Demo","Test");
+        /*SpeakerEntity speakerEntity= new SpeakerEntity();
+        speakerEntity.setName("Usuario 1");
+        speakerEntity.setLastname("Demo 1");
+        speakerEntity.setSkill("Test 1");
+        retrofitPresenter.addSpeaker(speakerEntity);*/
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //cargar expositores
+        showLoading(true);
+        retrofitPresenter.loadSpeakers();
     }
 
     private void gotoAdd() {
