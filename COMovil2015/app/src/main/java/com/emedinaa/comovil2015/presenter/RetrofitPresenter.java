@@ -55,9 +55,6 @@ public class RetrofitPresenter {
     }
     public void addSpeaker(SpeakerEntity speakerEntity)
     {
-        //JSONObject jsonObject= toJSONObject(speakerEntity);
-        Gson gson= new Gson();
-        //String json =gson.toJson(speakerEntity);
 
         ApiClient.getSpeakerApiClient().addSpeaker(speakerEntity, new Callback<SpeakerAddResponse>() {
             @Override
@@ -76,9 +73,6 @@ public class RetrofitPresenter {
         });
     }
 
-    public class RequestWrapper {
-        public SpeakerEntity speakerEntity;
-    }
     private JSONObject toJSONObject(SpeakerEntity speakerEntity)
     {
         JSONObject jsonObject = new JSONObject();

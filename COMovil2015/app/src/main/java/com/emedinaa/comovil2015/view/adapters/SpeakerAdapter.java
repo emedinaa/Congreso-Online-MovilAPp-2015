@@ -45,14 +45,14 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.ViewHold
         String url= speakerEntity.getPhotoPath();
         if(!url.isEmpty())
         {
-            Picasso.with(holder.iviSpeaker.getContext()) //profile_dummy
+            Picasso.with(holder.iviSpeaker.getContext())
                     .load(url)
                     .resize(200, 200)
                     .transform(new CircleTransform())
                     .into(holder.iviSpeaker);
         }else
         {
-            Picasso.with(holder.iviSpeaker.getContext()) //profile_dummy
+            Picasso.with(holder.iviSpeaker.getContext())
                     .load(R.drawable.default_user)
                     .resize(200, 200)
                     .transform(new CircleTransform())
